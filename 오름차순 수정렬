@@ -1,0 +1,55 @@
+/**/#include <stdio.h>
+#include <stdlib.h>
+
+void quick_sort(int numbers[], int left, int right);
+
+int main() {
+    int n;
+    printf("Enter the number of numbers: ");
+    scanf_s("%d", &n);
+    int* numbers = (int*)malloc(n * sizeof(int)); // Allocate memory using malloc
+    if (numbers == NULL) { // Check if allocation was successful
+        printf("Memory allocation failed!");
+        return 1;
+    }
+    for (int i = 0; i < n; i++) {
+        printf("Enter number %d: ", i + 1);
+        scanf_s("%d", &numbers[i]);
+    }
+    quick_sort(numbers, 0, n - 1);
+    printf("Sorted numbers in ascending order:\n");
+    for (int i = 0; i < n; i++) {
+        printf("%d\n", numbers[i]);
+    }
+    free(numbers); // Free the allocated memory
+    return 0;
+}
+
+void quick_sort(int numbers[], int left, int right) {
+    if (left >= right) {
+        return;
+    }
+    int pivot = numbers[left];
+    int i = left + 1;
+    int j = right;
+    while (i <= j) {
+        if (i <= right && numbers[i] < pivot) {
+            i++;
+        }
+        else if (j >= left && numbers[j] >= pivot) {
+            j--;
+        }
+        else {
+            int temp = numbers[i];
+            numbers[i] = numbers[j];
+            numbers[j] = temp;
+            i++;
+            j--;
+        }
+    }
+    int temp = numbers[left];
+    numbers[left] = numbers[j];
+    numbers[j] = temp;
+    quick_sort(numbers, left, j - 1);
+    quick_sort(numbers, j + 1, right);
+}
